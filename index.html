@@ -20,7 +20,7 @@
             margin: 0 auto;
             max-width: 60%;
             color: white;
-            font-size: 12px;
+            font-size: 14px;
             display:flex;
             flex-direction: row;
             justify-content: space-between;
@@ -33,7 +33,7 @@
             color: grey;
             cursor: pointer;
         }
-                .top-bar_content_menu div {
+        .top-bar_content_menu div {
             letter-spacing: 2px;
             margin-left: 20px;
         }
@@ -50,7 +50,35 @@
         .top-bar_content_social-networks div i {
             padding-top: 3px;
         }
-
+        .logo {
+            text-align: center;
+            padding: 50px;
+        }
+        .nav-bar {
+            font-weight: bold;
+            text-align: center;
+            margin: 0 auto;
+            font-size: 14px;
+            max-width: 1000px;
+            font-family: 'Open Sans', sans-serif;
+            color: rgba(0, 0, 0, .85);
+            border-top: 1px solid #efefef;
+            border-bottom: 1px solid #efefef;
+            padding: 16px 0;
+        }
+        .nav-bar span {
+            letter-spacing: 2px;
+            padding: 0 16px;
+            transition: color 0.5s;
+        }
+        .nav-bar span:hover {
+            cursor: pointer;
+            color: rgba(0, 0, 0, .5);
+        } 
+        .posts {
+            text-align: center;
+            font-size: 12px;
+        }      
     </style>
 </head>
 <body>
@@ -82,5 +110,49 @@
             </div>
         </div>
     </div>
+    <div class="section-one">
+        <div class="logo">
+            <img src="https://1.bp.blogspot.com/-8RIv9YCF9Js/WRGhWNKpBbI/AAAAAAAAAd8/XJXY92eHw-gLkT7YxXKpNCFoCuqfN-l9QCK4B/s1600/trendy-logo.png" alt="logo"> 
+        </div>
+    </div>
+    <div class="nav-bar">
+        <span>HOME</span>
+        <span>FASHION</span>
+        <span>LIFESTYLE</span>
+        <span>SHOP</span>
+        <span>TRAVEL</span>
+        <span>DOWNLOAD</span>
+    </div>
+    <div id="posts" class="posts"></div>
+    <script>
+        const postsContainer = document.getElementById('posts');
+        const appId = 'kTQNMBCBOtrJ9XLaaTF7';
+        fetch('https://dummyapi.io/data/api/post', {
+            method: 'GET',
+            headers: {
+                'app-id': appId,
+            },
+        })
+        .then(response => response.json())
+        .then(response => {
+            const posts = response.data;
+            posts.forEach(post => {
+                console.log('------');
+                console.log(post);
+                const postElem = document.createElement('div');
+                const textElem = document.createElement('div');
+                const imgElem = document.createElement('img');
+                imgElem.src = post.image;
+                textElem.innerHTML = post.text;
+                postElem.appendChild(imgElem);
+                postElem.appendChild(textElem);
+                postsContainer.appendChild(postElem);
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        
+    </script>
 </body>
 </html>
