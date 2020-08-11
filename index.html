@@ -9,13 +9,14 @@
     <style>
         body {
             margin: 0;
+            font-family: 'Open Sans', sans-serif;
         }
         .top-bar {
-            background: rgba(0, 0, 0, 0.90) ;
+            background: rgba(0, 0, 0, 0.85) ;
             font-family: 'Open Sans', sans-serif;
         }
         .top-bar_content {
-            height:40px;
+            height:30px;
             align-items: center;
             margin: 0 auto;
             max-width: 60%;
@@ -36,9 +37,11 @@
         .top-bar_content_menu div {
             letter-spacing: 2px;
             margin-left: 20px;
+            transition: color 0.3s
         }
         .top-bar_content_social-networks div {
             margin-left: 20px;
+            transition: color 0.3s;
         }
         .top-bar_content_social-networks div:hover {
             color: grey;
@@ -48,18 +51,18 @@
             margin-left: 5px;
         }
         .top-bar_content_social-networks div i {
-            padding-top: 3px;
+            margin-top: 3px;
         }
         .logo {
             text-align: center;
-            padding: 50px;
+            padding: 50px 0;
         }
         .nav-bar {
             font-weight: bold;
             text-align: center;
             margin: 0 auto;
             font-size: 14px;
-            max-width: 1000px;
+            max-width: 60%;
             font-family: 'Open Sans', sans-serif;
             color: rgba(0, 0, 0, .85);
             border-top: 1px solid #efefef;
@@ -69,16 +72,92 @@
         .nav-bar span {
             letter-spacing: 2px;
             padding: 0 16px;
-            transition: color 0.5s;
+            transition: color 0.3s;
         }
         .nav-bar span:hover {
             cursor: pointer;
             color: rgba(0, 0, 0, .5);
         } 
         .posts {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .posts-column {
+            width: 60%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .post {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .post-img {
+            width: 60%;
+        }
+        .post-text {
+            word-wrap: break-word;
+            font-size: 14px;
+            color: rgba(0, 0, 0, .75);
             text-align: center;
-            font-size: 12px;
-        }      
+            margin-top: 20px;
+        }
+        .post-id {
+            word-wrap: break-word;
+            font-size: 40px;
+            color: rgba(0, 0, 0, .75);
+            text-align: center;
+            margin-top: 40px;
+        }
+        .post-div-img {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .post-pub {
+            word-wrap: break-word;
+            font-size: 14px;
+            color: rgba(0, 0, 0, .75);
+            text-align: center;
+            margin-top: 14px;
+        }
+        .post-social {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            width: 100px;
+            font-size: 20px;
+            border: 2px solid black;
+            color: rgba(0, 0, 0, .85);
+            transition: color 0.3s;
+        }
+        .post-social :hover {
+            color: grey;
+            cursor: pointer;
+        }
+        .post-foot {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .post-line {
+            margin-top: 15px;
+            border-top: 1px solid grey;
+            width: 100px;
+        }
+        .post-cont {
+            background-color: rgba(0, 0, 0, .85);
+            color: white;
+            padding-top: 5px;
+            padding-right: 10px;
+            padding-left: 10px;
+            transition: background-color 0.3s;
+        }
+        .post-cont:hover {
+            background-color: rgb(187, 52, 52);
+        }
     </style>
 </head>
 <body>
@@ -110,10 +189,8 @@
             </div>
         </div>
     </div>
-    <div class="section-one">
-        <div class="logo">
-            <img src="https://1.bp.blogspot.com/-8RIv9YCF9Js/WRGhWNKpBbI/AAAAAAAAAd8/XJXY92eHw-gLkT7YxXKpNCFoCuqfN-l9QCK4B/s1600/trendy-logo.png" alt="logo"> 
-        </div>
+    <div class="logo">
+        <img src="https://1.bp.blogspot.com/-8RIv9YCF9Js/WRGhWNKpBbI/AAAAAAAAAd8/XJXY92eHw-gLkT7YxXKpNCFoCuqfN-l9QCK4B/s1600/trendy-logo.png" alt="logo"> 
     </div>
     <div class="nav-bar">
         <span>HOME</span>
@@ -126,7 +203,7 @@
     <div id="posts" class="posts"></div>
     <script>
         const postsContainer = document.getElementById('posts');
-        const appId = 'kTQNMBCBOtrJ9XLaaTF7';
+        const appId = 'mdsqhLG4EXY4DPiHuJ3N';
         fetch('https://dummyapi.io/data/api/post', {
             method: 'GET',
             headers: {
@@ -136,23 +213,98 @@
         .then(response => response.json())
         .then(response => {
             const posts = response.data;
-            posts.forEach(post => {
-                console.log('------');
-                console.log(post);
-                const postElem = document.createElement('div');
-                const textElem = document.createElement('div');
-                const imgElem = document.createElement('img');
-                imgElem.src = post.image;
-                textElem.innerHTML = post.text;
-                postElem.appendChild(imgElem);
-                postElem.appendChild(textElem);
-                postsContainer.appendChild(postElem);
-            });
+            const copyposts = [...posts];
+            console.log(copyposts);
+
+            const columnPosts = createPostsColumn(posts);
+            columnPosts.classList.add('posts-column');
+            postsContainer.appendChild(columnPosts);
+
         })
         .catch((error) => {
             console.error('Error:', error);
         });
-        
+
+        let createPostsColumn = function(posts) {
+            const columnPostContainer = document.createElement('div');
+            posts.forEach(post => {
+
+                const divImgElem = document.createElement('div');
+                divImgElem.classList.add('post-div-img');
+
+                const imgElem = document.createElement('img');
+                imgElem.src = post.image;
+                imgElem.classList.add('post-img');
+
+                const idElem = document.createElement('div');
+                idElem.innerHTML = post.id;
+                idElem.classList.add('post-id');
+
+                const pubElem = document.createElement('div');
+                pubElem.innerHTML = post.publishDate;
+                pubElem.classList.add('post-pub');
+
+                const textElem = document.createElement('div');
+                textElem.innerHTML = post.text;
+                textElem.classList.add('post-text');
+                
+                const lineElem = document.createElement('div');
+                lineElem.classList.add('post-line');
+
+                const footElem = document.createElement('div');
+                footElem.classList.add('post-foot');
+
+                const contElem = document.createElement('div');
+                contElem.innerHTML = 'CONTINUE READING';
+                contElem.classList.add('post-cont');
+
+                const socialElem = document.createElement('div');
+                socialElem.classList.add('post-social');
+
+                const facebookElem = document.createElement('i');
+                facebookElem.classList.add('fa-facebook');
+                facebookElem.classList.add('fa');
+
+                const twitterElem = document.createElement('i');
+                twitterElem.classList.add('fa-twitter');
+                twitterElem.classList.add('fa');
+
+                const pinterestElem = document.createElement('i');
+                pinterestElem.classList.add('fa-pinterest');
+                pinterestElem.classList.add('fa');
+
+                const postElem = document.createElement('div');
+                postElem.classList.add('post');
+                idElem.classList.add('fa');
+
+
+
+                socialElem.appendChild(facebookElem);
+                socialElem.appendChild(twitterElem);
+                socialElem.appendChild(pinterestElem);
+
+                footElem.appendChild(socialElem);
+                footElem.appendChild(lineElem);
+                footElem.appendChild(contElem);
+
+
+
+                divImgElem.appendChild(imgElem);
+                postElem.appendChild(divImgElem);
+                postElem.appendChild(idElem);
+                postElem.appendChild(textElem);
+                postElem.appendChild(pubElem);
+                postElem.appendChild(footElem);
+
+
+                columnPostContainer.appendChild(postElem);
+
+
+            })
+            return columnPostContainer;
+        }
+
+
     </script>
 </body>
 </html>
